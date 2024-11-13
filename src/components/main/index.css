@@ -1,0 +1,16 @@
+.main_form_div{
+    margin-top: 60px;
+}
+
+.form{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.form_item{
+    width: 49%;
+}
+.form_item_input {
+    padding: 18.5px 14px;
+}
