@@ -1,35 +1,34 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, notification, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { auth, db } from '../../services/firbase';  
+import { auth } from '../../services/firbase';  
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';  
+import { useDispatch } from 'react-redux';  
+import { login } from '../../state-managment/slice'; 
 
 const { Link } = Typography;
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();  
   const [loading, setLoading] = useState(false);
+
   const onFinish = async (values) => {
     setLoading(true);
     try {
       const { email, password } = values;
       await signInWithEmailAndPassword(auth, email, password);
-      const userDocRef = doc(db, "/registeredUsers", email);  
-      const userDoc = await getDoc(userDocRef);
-        
-      if (userDoc.exists()) {
+ 
         notification.success({
           message: 'Login Successful',
           description: 'You have logged in successfully!',
         });
-        return;
-      }
-      navigate('/main');
+        dispatch(login());  
+        navigate('/main');  
     } catch (error) {
       notification.error({
-        message: 'Invalid Login Credentials',
-        description: 'The email or password you entered is incorrect.',
+        message: 'Login Error',
+        description: 'There was an error logging you in.',
       });
     } finally {
       setLoading(false);

@@ -1,6 +1,8 @@
 import { Steps, Form } from "antd";
-import Header from "../header";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';  // Импортируем useSelector для проверки авторизации
+import Header from "../header";
 import Profile from "../../pages/profile";
 import Footer from "../footer";
 import Education from "../../pages/education";
@@ -8,20 +10,27 @@ import Skills from "../../pages/skills";
 import MiniProject from "../../pages/miniProject";
 import Social from "../../pages/social";
 import { userInfoData } from "../../core/constants/constanst";
-
 import "./index.css";
-
 
 const Main = () => {
   const [current, setCurrent] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); 
+
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
   const onChange = (value) => {
     setCurrent(value);
   };
 
   const handleNextStep = (value, cur) => {
-    
     if (cur === 0) {
       userInfoData.profile = value;
     } else if (cur === 1) { 
@@ -34,7 +43,7 @@ const Main = () => {
       userInfoData.social = value;
     }
     
-    if (current>= 0 && current< 4){
+    if (current >= 0 && current < 4) {
       setCurrent((prev) => prev + 1);
     }
     form.resetFields();
@@ -48,6 +57,7 @@ const Main = () => {
       setDisabled(false);
     }
   }, [current]);
+
   return (
     <div>
       <Header />
@@ -59,63 +69,18 @@ const Main = () => {
         onChange={onChange}
         size="small"
         items={[
-          {
-            title: "Profile Section",
-          },
-          {
-            title: "Education Section",
-          },
-          {
-            title: "Skills Sector",
-          },
-          {
-            title: "Mini Project",
-          },
-          {
-            title: "Social",
-          },
+          { title: "Profile Section" },
+          { title: "Education Section" },
+          { title: "Skills Sector" },
+          { title: "Mini Project" },
+          { title: "Social" },
         ]}
       />
-      {current === 0 && (
-        <Profile
-          form={form}
-          handleNextStep={(value) => {
-            handleNextStep(value, current);
-          }}
-        />
-      )}
-      {current === 1 && (
-        <Education
-          form={form}
-          handleNextStep={(value) => {
-            handleNextStep(value, current);
-          }}
-        />
-      )}
-      {current === 2 && (
-        <Skills
-          form={form}
-          handleNextStep={(value) => {
-            handleNextStep(value, current);
-          }}
-        />
-      )}
-      {current === 3 && (
-        <MiniProject
-          form={form}
-          handleNextStep={(value) => {
-            handleNextStep(value, current);
-          }}
-        />
-      )}
-      {current === 4 && (
-        <Social
-          form={form}
-          handleNextStep={(value) => {
-            handleNextStep(value, current);
-          }}
-        />
-      )}
+      {current === 0 && <Profile form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
+      {current === 1 && <Education form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
+      {current === 2 && <Skills form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
+      {current === 3 && <MiniProject form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
+      {current === 4 && <Social form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
 
       <hr />
       <Footer disabled={disabled} setCurrent={setCurrent} form={form} />
