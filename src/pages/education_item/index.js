@@ -1,16 +1,18 @@
 import { Form, Input } from "antd";
 
-const EducationItem = ()=>{
-    const [form] = Form.useForm();
+const EducationItem = ({form,handleNextStep})=>{
 
     return (
-        <Form form={form} className="form">
+        <Form form={form} 
+          className="form"
+          onFinish={handleNextStep}
+        >
         <Form.Item
           name="courseName"
           rules={[
             {
               required: true,
-              message: "Please input your name!",
+              message: "Please enter the name of the course!",
             },
           ]}
           className="form_item"
@@ -25,7 +27,7 @@ const EducationItem = ()=>{
           rules={[
             {
               required: true,
-              message: "Please input your name!",
+              message: "Please input completion year!",
             },
           ]}
           className="form_item"
@@ -40,7 +42,7 @@ const EducationItem = ()=>{
           rules={[
             {
               required: true,
-              message: "Please input your name!",
+              message: "Please enter the name of the college/school!",
             },
           ]}
           className="form_item"
@@ -55,7 +57,7 @@ const EducationItem = ()=>{
           rules={[
             {
               required: true,
-              message: "Please input your name!",
+              message: "Please input percentage!",
             },
           ]}
           className="form_item"

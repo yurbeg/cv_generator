@@ -1,12 +1,11 @@
 import { Form, Input } from "antd";
 import "./index.css"
-const MiniProjectItem = ()=>{
-    const [form] = Form.useForm();
+const MiniProjectItem = ({form,handleNextStep,i})=>{
 
     return (
-        <Form form={form} className="form">
+        <Form form={form} className="form" onFinish={handleNextStep}>
         <Form.Item
-          name="projectName"
+          name={`projectName${i}`}
           rules={[
             {
               required: true,
@@ -21,11 +20,11 @@ const MiniProjectItem = ()=>{
           />
         </Form.Item>
         <Form.Item
-          name="techStack"
+          name={`techStack${i}`}
           rules={[
             {
               required: true,
-              message: "Please input your name!",
+              message: "please input the technical stack!",
             },
           ]}
           className="mini_project"
@@ -36,11 +35,11 @@ const MiniProjectItem = ()=>{
           />
         </Form.Item>
         <Form.Item
-          name="description"
+          name={`description${i}`}
           rules={[
             {
               required: true,
-              message: "Please input your name!",
+              message: "Please enter a description of the project!",
             },
           ]}
           className="mini_project"

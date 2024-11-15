@@ -1,33 +1,33 @@
 import { Form } from "antd";
 import SkillsItem from "../skillsItem";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./index.css";
-const Skills = () => {
-  const [form] = Form.useForm();
-  const [disabled,setDisabled] = useState(true)
+const Skills = ({ form, handleNextStep }) => {
+  const [disabled, setDisabled] = useState(true);
 
-  const [skillList, setSkillList] = useState([<SkillsItem key={0} />]);
+  const [skillList, setSkillList] = useState([<SkillsItem key={0} i={0} />]);
   const handleAddSkill = ({ timeStamp }) => {
-    setSkillList([...skillList, <SkillsItem key={timeStamp} />]);
+    setSkillList([
+      ...skillList,
+      <SkillsItem key={timeStamp} i={skillList.length} />,
+    ]);
   };
   const handleDeleteSkill = () => {
     skillList.pop();
     setSkillList([...skillList]);
   };
-  useEffect(()=>{
-    if(skillList.length > 1){
-      setDisabled(false)
+  useEffect(() => {
+    if (skillList.length > 1) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
-    else{
-      setDisabled(true)
-
-    }
-  },[skillList])
+  }, [skillList]);
   return (
     <div className="skill_form_div">
       <h3 style={{ textAlign: "center" }}>Add your Skills</h3>
 
-      <Form form={form} className="form_skill">
+      <Form form={form} className="form_skill" onFinish={handleNextStep}>
         {skillList.map((skill) => skill)}
       </Form>
       <div className="delete_add_div">

@@ -1,8 +1,7 @@
 import { Form} from "antd";
 import SocialItem from "../socialItem";
 import { useState,useEffect } from "react";
-const Social = () => {
-  const [form] = Form.useForm();
+const Social = ({form,handleNextStep}) => {
   const [disabled,setDisabled] = useState(true)
   const [socialList,setSocialList] = useState([<SocialItem key={0}/>])
   const handleAddSocial = ({timeStamp}) => {   
@@ -16,7 +15,7 @@ const Social = () => {
     if(socialList.length > 1){
       setDisabled(false)
     }
-    else{
+    else{ 
       setDisabled(true)
 
     }
@@ -26,7 +25,7 @@ const Social = () => {
       <h3 style={{ textAlign: "center" }}>
         Add social links like linkedin , github etc
       </h3>
-        <Form form={form}>
+        <Form form={form} onFinish={handleNextStep}>
             {socialList.map(social=>social)}    
         </Form>
       <div className="delete_add_div">

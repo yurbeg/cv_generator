@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import EducationItem from "../education_item";
 import "./index.css";
-const Education = () => {
+const Education = ({form,handleNextStep}) => {
   const [disabled,setDisabled] = useState(true)
-  const [educationList,setEducationList] = useState([<EducationItem key={0}/>])
+  const [educationList,setEducationList] = useState([<EducationItem form={form} key={0}  handleNextStep={handleNextStep}/>])
   const handleAddEducation = ({timeStamp}) => {   
-    setEducationList([...educationList,<EducationItem  key={timeStamp}/>])
+    setEducationList([...educationList,<EducationItem form={form} key={timeStamp} handleNextStep={handleNextStep}/>])
   };
   const handleDeleteEducation = ()=>{
     educationList.pop()

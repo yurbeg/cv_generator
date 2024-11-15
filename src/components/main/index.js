@@ -1,4 +1,4 @@
-import { Steps } from "antd";
+import { Steps, Form } from "antd";
 import Header from "../header";
 import { useEffect, useState } from "react";
 import Profile from "../../pages/profile";
@@ -7,24 +7,47 @@ import Education from "../../pages/education";
 import Skills from "../../pages/skills";
 import MiniProject from "../../pages/miniProject";
 import Social from "../../pages/social";
+import { userInfoData } from "../../core/constants/constanst";
+
 import "./index.css";
+
+
 const Main = () => {
   const [current, setCurrent] = useState(0);
-  const [disabled,setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
+  const [form] = Form.useForm();
   const onChange = (value) => {
-   
     setCurrent(value);
   };
 
-  useEffect(()=>{
-    if(current === 0){
-      setDisabled(true)
+  const handleNextStep = (value, cur) => {
+    
+    if (cur === 0) {
+      userInfoData.profile = value;
+    } else if (cur === 1) { 
+      userInfoData.education = value;
+    } else if (cur === 2) {
+      userInfoData.skills = value;
+    } else if (cur === 3) {
+      userInfoData.miniProject = value;
+    } else if (cur === 4) {
+      userInfoData.social = value;
     }
-    else {
-      setDisabled(false)
+    
+    if (current>= 0 && current< 4){
+      setCurrent((prev) => prev + 1);
+    }
+    form.resetFields();
+    console.log(userInfoData);
+  };
 
+  useEffect(() => {
+    if (current === 0) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
     }
-  },[current])
+  }, [current]);
   return (
     <div>
       <Header />
@@ -53,17 +76,49 @@ const Main = () => {
           },
         ]}
       />
-      {current === 0 && <Profile/>}
-      {current === 1 && <Education/>}
-      {current === 2 && <Skills/>}
-      {current === 3 && <MiniProject/>}
-      {current === 4 && <Social/>}
-
-
-
+      {current === 0 && (
+        <Profile
+          form={form}
+          handleNextStep={(value) => {
+            handleNextStep(value, current);
+          }}
+        />
+      )}
+      {current === 1 && (
+        <Education
+          form={form}
+          handleNextStep={(value) => {
+            handleNextStep(value, current);
+          }}
+        />
+      )}
+      {current === 2 && (
+        <Skills
+          form={form}
+          handleNextStep={(value) => {
+            handleNextStep(value, current);
+          }}
+        />
+      )}
+      {current === 3 && (
+        <MiniProject
+          form={form}
+          handleNextStep={(value) => {
+            handleNextStep(value, current);
+          }}
+        />
+      )}
+      {current === 4 && (
+        <Social
+          form={form}
+          handleNextStep={(value) => {
+            handleNextStep(value, current);
+          }}
+        />
+      )}
 
       <hr />
-      <Footer disabled={disabled} setCurrent={setCurrent}/>
+      <Footer disabled={disabled} setCurrent={setCurrent} form={form} />
     </div>
   );
 };

@@ -1,15 +1,15 @@
 import { Form, Input } from "antd";
 import "./index.css"
-const SkillsItem = ()=>{
+const SkillsItem = ({i})=>{
     
     return (
 
     <Form.Item 
-        name="skill"
+        name={`skill${i}`}
         rules={[
         {
           required: true,
-          message: "Please input your name!",
+          message: "Please input skill!",
         },
       ]}
       className="skill_item"
