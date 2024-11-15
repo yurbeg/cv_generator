@@ -1,21 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, notification, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { auth, db } from '../../services/firbase';  
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';  
 
 const { Link } = Typography;
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
-  const onFinish = (values) => {
-    console.log('Login data:', values);
-
-    notification.success({
-      message: 'Login Successful',
-      description: 'You have logged in successfully!',
-    });
-
-    navigate('/main');
+  const [loading, setLoading] = useState(false);
+  const onFinish = async (values) => {
+    setLoading(true);
+    try {
+      const { email, password } = values;
+      await signInWithEmailAndPassword(auth, email, password);
+      const userDocRef = doc(db, "/registeredUsers", email);  
+      const userDoc = await getDoc(userDocRef);
+        
+      if (userDoc.exists()) {
+        notification.success({
+          message: 'Login Successful',
+          description: 'You have logged in successfully!',
+        });
+        return;
+      }
+      navigate('/main');
+    } catch (error) {
+      notification.error({
+        message: 'Invalid Login Credentials',
+        description: 'The email or password you entered is incorrect.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,7 +57,7 @@ const LoginForm = () => {
               },
               {
                 type: 'email',
-                message: 'The input is not valid E-mail!',
+                message: 'The input is not a valid E-mail!',
               },
             ]}
           >
@@ -57,14 +75,16 @@ const LoginForm = () => {
           >
             <Input.Password placeholder="Password" />
           </Form.Item>
+
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
+              loading={loading}
               style={{
                 width: '100%',
-                backgroundColor: '#f50057', // Custom button color
-                borderColor: '#f50057', // Ensures border matches button color
+                backgroundColor: '#f50057', 
+                borderColor: '#f50057',
               }}
             >
               Log in

@@ -1,22 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, notification, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { auth,db} from '../../services/firbase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+
+
 
 const { Link } = Typography;
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const [loading,setLoading] = useState(false)
 
-  const onFinish = (values) => {
-    console.log('Registration data:', values);
+  const onFinish = async (values) => {
+    setLoading(true);
+    const { name, email, password } = values;
+    try {
+      const response = await createUserWithEmailAndPassword(auth, email, password);
+      const { uid } = response.user;
+      const createdDoc = doc(db, "/registeredUsers", uid);
+      await setDoc(createdDoc, {
+        uid, name, email
+      });
+      notification.success({
+        message: 'Registration Successful',
+        description: 'You have registered successfully!',
+      });
+      navigate('/login');
+    }catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false)
+    }
+   
 
-    notification.success({
-      message: 'Registration Successful',
-      description: 'You have registered successfully!',
-    });
-
-    navigate('/login');
+  
   };
+
 
   return (
     <div className="form-container">
@@ -98,10 +119,11 @@ const RegisterForm = () => {
             <Button
               type="primary"
               htmlType="submit"
+              loading={loading}
               style={{
                 width: '100%',
-                backgroundColor: '#f50057', // Custom button color
-                borderColor: '#f50057', // Ensures border matches button color
+                backgroundColor: '#f50057',
+                borderColor: '#f50057', 
               }}
             >
               Register
