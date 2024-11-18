@@ -5,17 +5,11 @@ import { auth,db} from '../../services/firbase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { FIRESTORE_PATH_NAMES } from '../../core/constants/constanst';
-import { useDispatch } from 'react-redux';
-// import { setUid } from '../../state-managment/slice';?
-
-
-
 const { Link } = Typography;
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [loading,setLoading] = useState(false)
-  const dispatch  = useDispatch()
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -31,7 +25,6 @@ const RegisterForm = () => {
         message: 'Registration Successful',
         description: 'You have registered successfully!',
       });
-      // dispatch(setUid(uid))      
       navigate('/login');
 
     }catch (e) {

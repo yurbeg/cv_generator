@@ -10,7 +10,6 @@ function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   return (
-    
     <Router>
       <Routes>
         <Route index element={<LoginPage />} />

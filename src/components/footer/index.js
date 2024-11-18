@@ -20,8 +20,9 @@ const Footer = ({ disabled, setCurrent, form }) => {
     try {
       const createdDoc = doc(db, FIRESTORE_PATH_NAMES.USER_DATA_INFO, uid);
       await setDoc(createdDoc, userInfoData);
-    } catch (error) {
-      console.error("Error adding document: ", error);
+      notification.success("Your data has been successfully saved");
+    } catch  {
+      notification.error("Error adding document: ");
     } finally {
       setLoading(false);
     }
