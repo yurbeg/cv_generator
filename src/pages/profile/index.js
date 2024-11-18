@@ -1,5 +1,5 @@
-import { Form, Input, Upload, Button} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Form, Input} from "antd";
+// import { UploadOutlined } from "@ant-design/icons";
 import "./index.css"
 
 const Profile = ({form,handleNextStep}) => {

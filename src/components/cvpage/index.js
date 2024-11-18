@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
-  Button,
   Card,
   Col,
   Row,
@@ -8,12 +7,11 @@ import {
   Avatar,
   List,
   Divider,
-  
 } from "antd";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { db } from "../../services/firbase";
 import { doc, getDoc } from "firebase/firestore";
-import { jsPDF } from "jspdf";
+// import { jsPDF } from "jspdf";
 import { useSelector } from "react-redux";
 import { FIRESTORE_PATH_NAMES } from "../../core/constants/constanst";
 import "./index.css";
@@ -45,17 +43,17 @@ const CvPage = () => {
     fetchData();
   }, [uid]);
 
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-    doc.html(cvRef.current, {
-      callback: function (doc) {
-        doc.save("cv.pdf");
-      },
-      margin: [10, 10, 10, 10],
-      x: 10,
-      y: 10,
-    });
-  };
+  // const downloadPDF = () => {
+  //   const doc = new jsPDF();
+  //   doc.html(cvRef.current, {
+  //     callback: function (doc) {
+  //       doc.save("cv.pdf");
+  //     },
+  //     margin: [10, 10, 10, 10],
+  //     x: 10,
+  //     y: 10,
+  //   });
+  // };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -124,7 +122,11 @@ const CvPage = () => {
                 key={index}
               >
                 <p>
-                  <strong>{edu["college/school"]}</strong> {edu.courseName}
+                  <strong>College/school</strong> {edu["college/school"]}
+                </p>
+                
+                <p>
+                  <strong>Course Name</strong> {edu.courseName}
                 </p>
                 <p>
                   <strong>Year of Completion:</strong> {edu.completionYear}
@@ -150,14 +152,14 @@ const CvPage = () => {
         </Row>
       </div>
 
-      <Button
+      {/* <Button
         type="primary"
         icon={<i className="fas fa-download"></i>}
         onClick={downloadPDF}
         style={{ marginTop: "20px" }}
       >
         Download CV as PDF
-      </Button>
+      </Button> */}
     </div>
   );
 };
