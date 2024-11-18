@@ -36,7 +36,7 @@ const Main = () => {
     } else if (cur === 1) { 
       userInfoData.education = value;
     } else if (cur === 2) {
-      userInfoData.skills = value;
+      userInfoData.skills = Object.values(value);
     } else if (cur === 3) {
       userInfoData.miniProject = value;
     } else if (cur === 4) {
@@ -47,7 +47,6 @@ const Main = () => {
       setCurrent((prev) => prev + 1);
     }
     form.resetFields();
-    console.log(userInfoData);
   };
 
   useEffect(() => {

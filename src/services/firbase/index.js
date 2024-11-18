@@ -3,7 +3,6 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from "firebase/storage";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyCjguBxWtfqp0oytyrZP9yNh9L9NznfMmQ",
   authDomain: "cv-generator-952ab.firebaseapp.com",
@@ -18,8 +17,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-
-
 export {
   db,
   auth,

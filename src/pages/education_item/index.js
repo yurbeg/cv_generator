@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 
-const EducationItem = ({form,handleNextStep})=>{
+const EducationItem = ({form,handleNextStep,i})=>{
 
     return (
         <Form form={form} 
@@ -8,7 +8,7 @@ const EducationItem = ({form,handleNextStep})=>{
           onFinish={handleNextStep}
         >
         <Form.Item
-          name="courseName"
+          name={`courseName${i}`}
           rules={[
             {
               required: true,
@@ -23,7 +23,7 @@ const EducationItem = ({form,handleNextStep})=>{
           />
         </Form.Item>
         <Form.Item
-          name="completionYear"
+          name={`completionYear${i}`}
           rules={[
             {
               required: true,
@@ -38,7 +38,7 @@ const EducationItem = ({form,handleNextStep})=>{
           />
         </Form.Item>
         <Form.Item
-          name="college/school"
+          name={`college/school${i}`}
           rules={[
             {
               required: true,
@@ -53,7 +53,7 @@ const EducationItem = ({form,handleNextStep})=>{
           />
         </Form.Item>
         <Form.Item
-          name="percentage"
+          name={`percentage${i}`}
           rules={[
             {
               required: true,

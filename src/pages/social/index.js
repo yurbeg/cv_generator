@@ -3,9 +3,9 @@ import SocialItem from "../socialItem";
 import { useState,useEffect } from "react";
 const Social = ({form,handleNextStep}) => {
   const [disabled,setDisabled] = useState(true)
-  const [socialList,setSocialList] = useState([<SocialItem key={0}/>])
+  const [socialList,setSocialList] = useState([<SocialItem key={0} i={0}/>])
   const handleAddSocial = ({timeStamp}) => {   
-    setSocialList([...socialList,<SocialItem  key={timeStamp}/>])
+    setSocialList([...socialList,<SocialItem  key={timeStamp} i={socialList.length}/>])
   };
   const handleDeleteSocial = ()=>{
     socialList.pop()

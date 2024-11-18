@@ -1,8 +1,8 @@
 import { Form, Input } from "antd";
-const SocialItem = () => {
+const SocialItem = ({i}) => {
   return (
     <Form.Item
-      name="social"
+      name={`social${i}`}
       rules={[
         {
           required: true,

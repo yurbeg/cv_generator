@@ -1,0 +1,54 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.cv-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.cv-title {
+  color: #f50057;
+  font-weight: bold;
+}
+
+.cv-subtitle {
+  color: #f50057;
+}
+
+.profile-card {
+  text-align: center;
+  background-color: #fff;
+}
+
+.profile-avatar {
+  margin-bottom: 1rem;
+}
+
+.cv-section {
+  margin-bottom: 2rem;
+}
+
+.cv-btn {
+  color: #f50057;
+  font-weight: 500;
+}
+
+.cv-btn:hover {
+  color: white;
+  background-color: #f50057;
+}
+
+.ant-divider-horizontal {
+  border-top: 1px solid #f50057;
+}
+
+@media (max-width: 768px) {
+  .cv-container {
+    width: 100%;
+    padding: 1rem;
+  }
+}

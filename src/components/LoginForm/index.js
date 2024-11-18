@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Form, Input, Button, notification, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firbase';  
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';  
 import { login } from '../../state-managment/slice'; 
+import { setUid } from '../../state-managment/slice';
 
 const { Link } = Typography;
 
@@ -16,9 +17,10 @@ const LoginForm = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const { email, password } = values;
+      const { email, password,} = values;
       await signInWithEmailAndPassword(auth, email, password);
- 
+      
+      
         notification.success({
           message: 'Login Successful',
           description: 'You have logged in successfully!',
@@ -35,6 +37,17 @@ const LoginForm = () => {
     }
   };
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        dispatch(setUid(user.uid));
+      } else {
+        dispatch(setUid(null));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
   return (
     <div className="form-container">
       <div className="form-content">

@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { auth,db} from '../../services/firbase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
+import { FIRESTORE_PATH_NAMES } from '../../core/constants/constanst';
+import { useDispatch } from 'react-redux';
+// import { setUid } from '../../state-managment/slice';?
 
 
 
@@ -12,6 +15,7 @@ const { Link } = Typography;
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [loading,setLoading] = useState(false)
+  const dispatch  = useDispatch()
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -19,7 +23,7 @@ const RegisterForm = () => {
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
       const { uid } = response.user;
-      const createdDoc = doc(db, "/registeredUsers", uid);
+      const createdDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
       await setDoc(createdDoc, {
         uid, name, email
       });
@@ -27,7 +31,9 @@ const RegisterForm = () => {
         message: 'Registration Successful',
         description: 'You have registered successfully!',
       });
+      // dispatch(setUid(uid))      
       navigate('/login');
+
     }catch (e) {
       console.log(e);
     } finally {

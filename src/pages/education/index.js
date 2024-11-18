@@ -3,9 +3,9 @@ import EducationItem from "../education_item";
 import "./index.css";
 const Education = ({form,handleNextStep}) => {
   const [disabled,setDisabled] = useState(true)
-  const [educationList,setEducationList] = useState([<EducationItem form={form} key={0}  handleNextStep={handleNextStep}/>])
+  const [educationList,setEducationList] = useState([<EducationItem form={form} key={0}  handleNextStep={handleNextStep} i={0}/>])
   const handleAddEducation = ({timeStamp}) => {   
-    setEducationList([...educationList,<EducationItem form={form} key={timeStamp} handleNextStep={handleNextStep}/>])
+    setEducationList([...educationList,<EducationItem form={form} key={timeStamp} handleNextStep={handleNextStep} i={educationList.length}/>])
   };
   const handleDeleteEducation = ()=>{
     educationList.pop()
