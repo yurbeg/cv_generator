@@ -1,13 +1,62 @@
-.header{
+.header {
     width: 100%;
-    background-color:#f50057;
+    background-color: #f50057;
     color: white;
     display: flex;
-    justify-content: center;
+    justify-content: space-between; 
     align-items: center;
-    min-height: 64px;
-}
-.header > h2{
-    font-weight:500;
-    letter-spacing: 0.0075em;
-}
+    margin: auto;
+    padding: 0 20px; 
+    min-height: 64px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  }
+  .h2_name{
+    margin-right: 120px ;
+  }
+  .header > h2 {
+    font-weight: 600; 
+    font-size: 24px; 
+    letter-spacing: 0.01em; 
+    /* margin: 0;  */
+    color: #fff;
+    display: inline-block;
+  }
+ 
+  .logout-btn {
+    background-color: white;
+    color: #f50057;
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .logout-btn:hover {
+    background-color: #f50057; 
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+  }
+  
+  .logout-btn:active {
+    transform: translateY(1px);
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      padding: 0 15px; 
+    }
+  
+    .header > h2 {
+      font-size: 20px;
+    }
+  
+    .logout-btn {
+      font-size: 13px; 
+      padding: 6px 12px; 
+    }
+  }
+  

@@ -1,5 +1,9 @@
+.main_div{
+    padding: 5px 15px;
+}
 .main_form_div{
     margin-top: 60px;
+    width: 100%;
 }
 
 .form{

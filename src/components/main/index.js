@@ -1,7 +1,8 @@
 import { Steps, Form } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';  // Импортируем useSelector для проверки авторизации
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { setProfile, setEducation, setSkills, setMiniProject, setSocial } from '../../state-managment/slice/userInfoSlice'; // импортируем действия
 import Header from "../header";
 import Profile from "../../pages/profile";
 import Footer from "../footer";
@@ -9,7 +10,6 @@ import Education from "../../pages/education";
 import Skills from "../../pages/skills";
 import MiniProject from "../../pages/miniProject";
 import Social from "../../pages/social";
-import { userInfoData } from "../../core/constants/constanst";
 import "./index.css";
 
 const Main = () => {
@@ -17,8 +17,13 @@ const Main = () => {
   const [disabled, setDisabled] = useState(true);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); 
+  const location = useLocation();  
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);   
+  const dispatch = useDispatch(); 
 
+  const updateStepInURL = (step) => {
+    navigate(`?step=${step}`, { replace: true });
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -26,25 +31,35 @@ const Main = () => {
     }
   }, [isAuthenticated, navigate]);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const stepFromURL = urlParams.get('step');
+    if (stepFromURL) {
+      setCurrent(Number(stepFromURL)); 
+    }
+  }, [location.search]);
+
   const onChange = (value) => {
     setCurrent(value);
+    updateStepInURL(value);  
   };
 
   const handleNextStep = (value, cur) => {
     if (cur === 0) {
-      userInfoData.profile = value;
+      dispatch(setProfile(value)); 
     } else if (cur === 1) { 
-      userInfoData.education = value;
+      dispatch(setEducation(value)); 
     } else if (cur === 2) {
-      userInfoData.skills = Object.values(value);
+      dispatch(setSkills(Object.values(value))); 
     } else if (cur === 3) {
-      userInfoData.miniProject = value;
+      dispatch(setMiniProject(value));
     } else if (cur === 4) {
-      userInfoData.social = value;
+      dispatch(setSocial(value)); 
     }
     
     if (current >= 0 && current < 4) {
       setCurrent((prev) => prev + 1);
+      updateStepInURL(current + 1); 
     }
     form.resetFields();
   };
@@ -58,7 +73,7 @@ const Main = () => {
   }, [current]);
 
   return (
-    <div>
+    <div className="main_div">
       <Header />
       <Steps
         style={{

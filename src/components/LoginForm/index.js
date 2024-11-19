@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firbase';  
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';  
-import { login } from '../../state-managment/slice'; 
-import { setUid } from '../../state-managment/slice';
+import { login,setUid} from '../../state-managment/slice/authSlice'; 
 
 const { Link } = Typography;
 
