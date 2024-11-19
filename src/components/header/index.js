@@ -46,9 +46,7 @@ const Header = () => {
       </Flex>
     );
   }
-  if(!name){
-    return <div>Data not found!</div>
-  }
+
   return (
     <div className="header">
       <h2>RESUME GENERATOR</h2>
