@@ -17,7 +17,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route index  element={!isAuthenticated?<LoginPage />:<Main/>} />
+        <Route index  element={!isAuthenticated?<LoginPage />:<Navigate to={"/main"}/>} />
         <Route
           path="/main"
           element={
@@ -30,10 +30,10 @@ function App() {
         />
         <Route
           path="/login"
-          element={<LoginPage onLogin={() => dispatch(login())} />}
+          element={!isAuthenticated?<LoginPage onLogin={() => dispatch(login())} />:<Navigate to={"/main"} />}
         />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/cvpage" element={<CvPage />} />
+        <Route path="/register" element={!isAuthenticated?<RegisterPage />:<Navigate to={"/main"}/> } />
+        <Route path="/cvpage" element={isAuthenticated?<CvPage />:<Navigate to={"/login"}/>} />
       </Routes>
     </Router>
   );

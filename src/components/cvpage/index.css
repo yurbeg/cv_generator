@@ -1,55 +1,140 @@
-body {
-  font-family: "Roboto", sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-}
-
 .cv-container {
-  width: 80%;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.cv-title {
-  color: #f50057;
+.cv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.cv-name h1 {
+  font-size: 32px;
+  color: #f50057; 
+  margin: 0;
+}
+
+.cv-name p {
+  font-size: 18px;
+  color: #777;
+}
+
+.cv-section h2 {
+  font-size: 24px;
+  color: #f50057; 
+  border-bottom: 2px solid #f50057;
+  padding-bottom: 5px;
+  margin-bottom: 15px; 
+}
+
+.cv-contact-info {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cv-contact-info li {
+  margin: 10px 0; 
+}
+
+.cv-contact-info li strong {
   font-weight: bold;
 }
 
-.cv-subtitle {
+.cv-skills {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cv-skills li {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.cv-experience {
+  margin-bottom: 30px;
+}
+
+.cv-experience h3 {
+  font-size: 20px;
+  font-weight: bold;
   color: #f50057;
+  margin-top: 0;
 }
 
-.profile-card {
-  text-align: center;
-  background-color: #fff;
+.cv-experience ul {
+  list-style-type: disc;
+  margin-left: 20px;
 }
 
-.profile-avatar {
-  margin-bottom: 1rem;
+.cv-experience ul li {
+  font-size: 16px;
+  margin: 5px 0;
 }
 
-.cv-section {
-  margin-bottom: 2rem;
+.cv-education h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #f50057; 
+  margin-top: 0;
 }
 
-.cv-btn {
-  color: #f50057;
-  font-weight: 500;
+.cv-education p {
+  font-size: 16px;
+  margin: 5px 0;
 }
 
-.cv-btn:hover {
-  color: white;
+button.ant-btn-primary {
   background-color: #f50057;
+  border-color: #f50057;
+  color: white;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 30px;
+  display: block;
+  margin:0 auto;
 }
 
-.ant-divider-horizontal {
-  border-top: 1px solid #f50057;
+button.ant-btn-primary:hover,
+button.ant-btn-primary:focus {
+  background: #c79cab;
+  border-color: #f50057;
+}
+
+button.ant-btn-primary:active {
+  background-color: #c50047;
+  border-color: #c50047;
 }
 
 @media (max-width: 768px) {
   .cv-container {
+    padding: 15px;
+  }
+
+  .cv-header {
+    margin-bottom: 30px;
+  }
+
+  .cv-name h1 {
+    font-size: 28px;
+  }
+
+  .cv-section h2 {
+    font-size: 22px;
+  }
+
+  button.ant-btn-primary {
     width: 100%;
-    padding: 1rem;
+    max-width: none;
   }
 }
-

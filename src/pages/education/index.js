@@ -1,40 +1,56 @@
 import { useEffect, useState } from "react";
 import EducationItem from "../education_item";
 import "./index.css";
-const Education = ({form,handleNextStep}) => {
-  const [disabled,setDisabled] = useState(true)
-  const [educationList,setEducationList] = useState([<EducationItem form={form} key={0}  handleNextStep={handleNextStep} i={0}/>])
-  const handleAddEducation = ({timeStamp}) => {   
-    setEducationList([...educationList,<EducationItem form={form} key={timeStamp} handleNextStep={handleNextStep} i={educationList.length}/>])
-  };
-  const handleDeleteEducation = ()=>{
-    educationList.pop()
-    setEducationList([...educationList])
-  }
-  useEffect(()=>{
-    if(educationList.length > 1){
-      setDisabled(false)
-    }
-    else{
-      setDisabled(true)
+import { Button } from "antd";
 
+const Education = ({ form, handleNextStep }) => {
+  const [disabled, setDisabled] = useState(true);
+  const [educationList, setEducationList] = useState([0]); 
+
+  const handleAddEducation = () => {
+    setEducationList(prevList => [...prevList, prevList.length]); 
+  };
+
+  const handleDeleteEducation = () => {
+    if (educationList.length > 1) {
+      setEducationList(prevList => prevList.slice(0, -1)); 
     }
-  },[educationList])
+  };
+
+  useEffect(() => {
+    setDisabled(educationList.length <= 1);
+  }, [educationList]);
+
   return (
     <div className="main_form_div">
       <h3 style={{ textAlign: "center" }}>Add your Education Details</h3>
-      {
-        educationList.map((education)=>education)
-      }
+
+      {educationList.map((id) => (
+        <EducationItem 
+          key={id} 
+          form={form} 
+          handleNextStep={handleNextStep} 
+          educationId={id}  
+        />
+      ))}
 
       <div className="delete_add_div">
-        <button className="delete_add_btn white_btn" disabled={disabled}
-        onClick={handleDeleteEducation}>
+        <Button
+          className="delete_add_btn white_btn"
+          disabled={disabled}
+          onClick={handleDeleteEducation}
+        >
           DELETE
-        </button>
-        <button className="delete_add_btn blue_btn" onClick={handleAddEducation}> ADD EDUCATION</button>
+        </Button>
+        <Button
+          className="delete_add_btn blue_btn"
+          onClick={handleAddEducation}
+        >
+          ADD EDUCATION
+        </Button>
       </div>
     </div>
   );
 };
+
 export default Education;

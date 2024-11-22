@@ -1,4 +1,4 @@
-import { Steps, Form } from "antd";
+import { Steps, Form   } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,14 +12,24 @@ import MiniProject from "../../pages/miniProject";
 import Social from "../../pages/social";
 import "./index.css";
 
+const steps = [
+  { title: "Profile Section", component: Profile, action: setProfile },
+  { title: "Education Section", component: Education, action: setEducation },
+  { title: "Skills Sector", component: Skills, action: setSkills },
+  { title: "Mini Project", component: MiniProject, action: setMiniProject },
+  { title: "Social", component: Social, action: setSocial },
+];
+
 const Main = () => {
   const [current, setCurrent] = useState(0);
   const [disabled, setDisabled] = useState(true);
+  const [disabledContinue, setDisabledContinue] = useState(false);
+  const [textBtn,setTextBtn] = useState("NEXT")
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const location = useLocation();  
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);   
-  const dispatch = useDispatch(); 
+  const location = useLocation();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
 
   const updateStepInURL = (step) => {
     navigate(`?step=${step}`, { replace: true });
@@ -35,69 +45,56 @@ const Main = () => {
     const urlParams = new URLSearchParams(location.search);
     const stepFromURL = urlParams.get('step');
     if (stepFromURL) {
-      setCurrent(Number(stepFromURL)); 
+      setCurrent(Number(stepFromURL));
     }
   }, [location.search]);
 
   const onChange = (value) => {
     setCurrent(value);
-    updateStepInURL(value);  
+    updateStepInURL(value);
   };
 
-  const handleNextStep = (value, cur) => {
-    if (cur === 0) {
-      dispatch(setProfile(value)); 
-    } else if (cur === 1) { 
-      dispatch(setEducation(value)); 
-    } else if (cur === 2) {
-      dispatch(setSkills(Object.values(value))); 
-    } else if (cur === 3) {
-      dispatch(setMiniProject(value));
-    } else if (cur === 4) {
-      dispatch(setSocial(value)); 
-    }
-    
-    if (current >= 0 && current < 4) {
-      setCurrent((prev) => prev + 1);
-      updateStepInURL(current + 1); 
+  const handleNextStep = (value) => {
+    const currentStep = steps[current];
+    dispatch(currentStep.action(currentStep.action === setSkills ? Object.values(value) : value));
+    if (current < steps.length - 1) {
+      setCurrent(prev => prev + 1);
+      updateStepInURL(current + 1);
     }
     form.resetFields();
   };
 
   useEffect(() => {
-    if (current === 0) {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
+    setDisabled(current === 0);
+    if(current >= 4){
+      setTextBtn("SAVE")
+      setDisabledContinue(false)
+    }else{
+      setTextBtn("NEXT")
+      setDisabledContinue(true)
     }
   }, [current]);
+
+  const CurrentComponent = steps[current]?.component;
 
   return (
     <div className="main_div">
       <Header />
       <Steps
-        style={{
-          marginTop: 30,
-        }}
+        style={{ marginTop: 30 }}
         current={current}
         onChange={onChange}
         size="small"
-        items={[
-          { title: "Profile Section" },
-          { title: "Education Section" },
-          { title: "Skills Sector" },
-          { title: "Mini Project" },
-          { title: "Social" },
-        ]}
+        items={steps.map(step => ({ title: step.title }))}
       />
-      {current === 0 && <Profile form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
-      {current === 1 && <Education form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
-      {current === 2 && <Skills form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
-      {current === 3 && <MiniProject form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
-      {current === 4 && <Social form={form} handleNextStep={(value) => handleNextStep(value, current)} />}
-
+      {CurrentComponent && (
+        <CurrentComponent
+          form={form}
+          handleNextStep={handleNextStep}
+        />
+      )}
       <hr />
-      <Footer disabled={disabled} setCurrent={setCurrent} form={form} />
+      <Footer disabled={disabled} setCurrent={setCurrent} form={form} textBtn={textBtn} disabledContinue = {disabledContinue}/>
     </div>
   );
 };

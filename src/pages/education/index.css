@@ -1,9 +1,10 @@
 .delete_add_div{
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
+    gap: 25px;
 }
 .delete_add_btn{
-    margin-right: 8px;
     padding: 6px 16px;
     font-size: 0.875rem;
     min-width: 64px;

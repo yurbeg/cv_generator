@@ -1,21 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { Spin, Flex, Button, Card, List, Typography, Space } from "antd";
 import {
-  Card,
-  Col,
-  Row,
-  Typography,
-  Avatar,
-  List,
-  Divider,
-  Spin,
-  Flex,
-} from "antd";
-import { PhoneOutlined, MailOutlined,LoadingOutlined } from "@ant-design/icons";
+  LoadingOutlined,
+  GithubOutlined,
+  LinkedinOutlined,
+  FacebookOutlined,
+} from "@ant-design/icons";
 import { db } from "../../services/firbase";
 import { doc, getDoc } from "firebase/firestore";
-// import { jsPDF } from "jspdf";
 import { useSelector } from "react-redux";
 import { FIRESTORE_PATH_NAMES } from "../../core/constants/constanst";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./index.css";
 
 const { Title, Paragraph } = Typography;
@@ -24,7 +19,8 @@ const CvPage = () => {
   const [cvData, setCvData] = useState(null);
   const [loading, setLoading] = useState(false);
   const { uid } = useSelector((state) => state.auth);
-  const cvRef = useRef();
+  const navigate = useNavigate(); // Use the navigate hook
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -46,22 +42,14 @@ const CvPage = () => {
     fetchData();
   }, [uid]);
 
-  // const downloadPDF = () => {
-  //   const doc = new jsPDF();
-  //   doc.html(cvRef.current, {
-  //     callback: function (doc) {
-  //       doc.save("cv.pdf");
-  //     },
-  //     margin: [10, 10, 10, 10],
-  //     x: 10,
-  //     y: 10,
-  //   });
-  // };
-
   if (loading) {
     return (
-      <Flex align="center" justify="center" style={{height:"100vh"}}>
-        <Spin size="large" indicator={<LoadingOutlined spin />} style={{color:"#f50057"}}/>
+      <Flex align="center" justify="center" style={{ height: "100vh" }}>
+        <Spin
+          size="large"
+          indicator={<LoadingOutlined spin />}
+          style={{ color: "#f50057" }}
+        />
       </Flex>
     );
   }
@@ -69,105 +57,145 @@ const CvPage = () => {
   if (!cvData) {
     return <div>No data found!</div>;
   }
-  const { profile, education, miniProject, skills } = cvData;
-  const educationArray = Object.keys(education).reduce((acc, key) => {
-    const match = key.match(/\d+/);
-    if (match) {
-      const index = match[0];
-      if (!acc[index]) acc[index] = {};
-      const propertyName = key.replace(/\d+$/, "");
-      acc[index][propertyName] = education[key];
-    }
 
+  const { profile, education, skills, social } = cvData;
+  const { firstName, phoneNumber, lastName, address, email } = profile;
+
+  const educationData = Object.keys(education).reduce((acc, key) => {
+    const match = key.match(/_(\d+)$/);
+    if (match) {
+      const index = match[1];
+      if (!acc[index]) {
+        acc[index] = {};
+      }
+
+      const fieldName = key.replace(`_${index}`, "");
+      acc[index][fieldName] = education[key];
+    }
     return acc;
   }, []);
+
+  const handleNavigateToMain = () => {
+    navigate("/main"); 
+  };
+
   return (
     <div className="cv-container">
-      <div ref={cvRef}>
-        <Row gutter={32} justify="center">
-          <Col xs={24} sm={8}>
-            <Card bordered={false} className="profile-card">
-              <Avatar
-                size={128}
-                src={profile.imageUrl}
-                className="profile-avatar"
+      <header className="cv-header">
+        <div className="cv-name">
+          <Title level={1}>{`${firstName} ${lastName}`}</Title>
+        </div>
+      </header>
+
+      <section className="cv-section">
+        <Title level={2}>Contact Information</Title>
+        <Card>
+          <List
+            bordered
+            dataSource={[
+              { label: "Email", value: email },
+              { label: "Phone", value: phoneNumber },
+              { label: "Address", value: address },
+            ]}
+            renderItem={(item) => (
+              <List.Item>
+                <strong>{item.label}:</strong> {item.value}
+              </List.Item>
+            )}
+          />
+        </Card>
+      </section>
+
+      <section className="cv-section">
+        <Title level={2}>Skills</Title>
+        <Card>
+          <List
+            size="small"
+            dataSource={skills}
+            renderItem={(item) => <List.Item>{item}</List.Item>}
+          />
+        </Card>
+      </section>
+
+      <section className="cv-section">
+        <Title level={2}>Education</Title>
+        <Card>
+          <List
+            itemLayout="vertical"
+            dataSource={educationData}
+            renderItem={(edu, index) => (
+              <List.Item key={index}>
+                <Space direction="vertical">
+                  <Title level={4}>{edu.courseName}</Title>
+                  <Paragraph>
+                    <strong>School:</strong> {edu.school}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Year of Completion:</strong> {edu.completionYear}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Percentage:</strong> {edu.percentage}%
+                  </Paragraph>
+                </Space>
+              </List.Item>
+            )}
+          />
+        </Card>
+      </section>
+
+      <section className="cv-section">
+        <Title level={2}>Social Media</Title>
+        <div className="cv-socials">
+          <Space size="middle">
+            {social.github && (
+              <Button
+                type="link"
+                icon={
+                  <GithubOutlined style={{ fontSize: "2rem", color: "#333" }} />
+                }
+                href={social.github}
+                target="_blank"
+                rel="noopener noreferrer"
               />
-              <Title
-                level={2}
-                className="cv-title"
-              >{`${profile.firstName} ${profile.lastName}`}</Title>
-              <Paragraph>
-                <PhoneOutlined /> {profile.phoneNumber}
-              </Paragraph>
-              <Paragraph>
-                <MailOutlined /> {profile.email}
-              </Paragraph>
-              <Paragraph>{profile.address}</Paragraph>
-
-              <Divider />
-
-              <Title level={4} className="cv-subtitle">
-                Skills
-              </Title>
-              <List
-                size="small"
-                bordered
-                dataSource={skills}
-                renderItem={(item) => <List.Item>{item}</List.Item>}
+            )}
+            {social.linkedin && (
+              <Button
+                type="link"
+                icon={
+                  <LinkedinOutlined
+                    style={{ fontSize: "2rem", color: "#0077b5" }}
+                  />
+                }
+                href={social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
               />
+            )}
+            {social.facebook && (
+              <Button
+                type="link"
+                icon={
+                  <FacebookOutlined
+                    style={{ fontSize: "2rem", color: "#1877F2" }}
+                  />
+                }
+                href={social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            )}
+          </Space>
+        </div>
+      </section>
 
-              <Divider />
-            </Card>
-          </Col>
-
-          <Col xs={24} sm={16}>
-            {educationArray.map((edu, index) => (
-              <Card
-                title="Education"
-                bordered={false}
-                className="cv-section"
-                key={index}
-              >
-                <p>
-                  <strong>College/school</strong> {edu["college/school"]}
-                </p>
-
-                <p>
-                  <strong>Course Name</strong> {edu.courseName}
-                </p>
-                <p>
-                  <strong>Year of Completion:</strong> {edu.completionYear}
-                </p>
-                <p>
-                  <strong>Percentage:</strong> {edu.percentage}%
-                </p>
-              </Card>
-            ))}
-
-            <Card title="Mini Projects" bordered={false} className="cv-section">
-              <p>
-                <strong>Project Name</strong> {miniProject.projectName0}
-              </p>
-              <p>
-                <strong>Tech Stack:</strong> {miniProject.techStack0}
-              </p>
-              <p>
-                <strong>Description: </strong> {miniProject.description0}
-              </p>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-
-      
-      {/* <Button
-        type="primary"
-        icon={<i className="fas fa-download"></i>}
-        onClick={downloadPDF}
-        style={{ marginTop: "20px" }}
-      >
-        Download CV as PDF
-      </Button> */}
+      <section className="cv-section">
+        <Button
+          type="primary"
+          onClick={handleNavigateToMain}
+        >
+          Go to Main Page
+        </Button>
+      </section>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Input, Button, notification, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { auth,db} from '../../services/firbase';

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FIRESTORE_PATH_NAMES } from "../../core/constants/constanst";
 import "./index.css";
 
-const Footer = ({ disabled, setCurrent, form }) => {
+const Footer = ({ disabled, setCurrent, form, textBtn,disabledContinue}) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { uid } = useSelector((state) => state.auth);
@@ -54,16 +54,18 @@ const Footer = ({ disabled, setCurrent, form }) => {
         BACK
       </button>
       <button className="footer_btn primary" onClick={form.submit}>
-        NEXT
+        {textBtn}
       </button>
       <Button
         className="footer_btn primary"
         onClick={saveUserData}
         loading={loading}
         style={{ padding:"20px 16px" }}
+        disabled={disabledContinue}
       >
-        SAVE AND CONTINUE
+        CONTINUE
       </Button>
+    
     </div>
   );
 };

@@ -1,7 +1,9 @@
 .footer_div{
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
+
 .footer_btn{
     margin-right: 8px;
     padding: 6px 16px;

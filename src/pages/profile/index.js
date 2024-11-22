@@ -62,6 +62,19 @@ const Profile = ({form,handleNextStep}) => {
         >
           <Input type="address" placeholder="Address"  className="form_item_input"/>
         </Form.Item>
+        <Form.Item
+          className="form_item"
+
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input email!",
+            },
+          ]}
+        >
+          <Input type="address" placeholder="Email  "  className="form_item_input"/>
+        </Form.Item>
         {/* <Form.Item
           className="form_item"
          style={{border:"1px solid rgba(0, 0, 0, 0.2)", padding:"13.5px 14px",borderRadius:5}}
