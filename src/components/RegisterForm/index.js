@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth,db} from '../../services/firbase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
-import { FIRESTORE_PATH_NAMES } from '../../core/constants/constanst';
+import { FIRESTORE_PATH_NAMES,ROUTE_CONSTANTS } from '../../core/constants/constanst';
 const { Link } = Typography;
 
 const RegisterForm = () => {
@@ -25,7 +25,7 @@ const RegisterForm = () => {
         message: 'Registration Successful',
         description: 'You have registered successfully!',
       });
-      navigate('/login');
+      navigate(ROUTE_CONSTANTS.LOGIN);
 
     }catch (e) {
       console.log(e);
@@ -131,7 +131,7 @@ const RegisterForm = () => {
 
           <Form.Item style={{ textAlign: 'center' }}>
             <Typography.Text>Already have an account? </Typography.Text>
-            <Link href="/login">Login</Link>
+            <Link href={ROUTE_CONSTANTS.LOGIN}>Login</Link>
           </Form.Item>
         </Form>
       </div>

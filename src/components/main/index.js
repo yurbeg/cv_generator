@@ -10,6 +10,7 @@ import Education from "../../pages/education";
 import Skills from "../../pages/skills";
 import MiniProject from "../../pages/miniProject";
 import Social from "../../pages/social";
+import { ROUTE_CONSTANTS } from "../../core/constants/constanst";
 import "./index.css";
 
 const steps = [
@@ -37,7 +38,7 @@ const Main = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate(ROUTE_CONSTANTS.LOGIN);
     }
   }, [isAuthenticated, navigate]);
 

@@ -5,6 +5,7 @@ import { auth } from '../../services/firbase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';  
 import { login,setUid} from '../../state-managment/slice/authSlice'; 
+import { ROUTE_CONSTANTS } from '../../core/constants/constanst';
 
 const { Link } = Typography;
 
@@ -25,7 +26,7 @@ const LoginForm = () => {
           description: 'You have logged in successfully!',
         });
         dispatch(login());  
-        navigate('/main');  
+        navigate(ROUTE_CONSTANTS.MAIN);  
     } catch (error) {
       notification.error({
         message: 'Login Error',
@@ -104,7 +105,7 @@ const LoginForm = () => {
 
           <Form.Item style={{ textAlign: 'center' }}>
             <Typography.Text>Don't have an account? </Typography.Text>
-            <Link href="/register">Register</Link>
+            <Link href={ROUTE_CONSTANTS.REGISTER}>Register</Link>
           </Form.Item>
         </Form>
       </div>

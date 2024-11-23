@@ -4,7 +4,7 @@ import { db } from "../../services/firbase";
 import { setDoc, doc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FIRESTORE_PATH_NAMES } from "../../core/constants/constanst";
+import { FIRESTORE_PATH_NAMES,ROUTE_CONSTANTS } from "../../core/constants/constanst";
 import "./index.css";
 
 const Footer = ({ disabled, setCurrent, form, textBtn,disabledContinue}) => {
@@ -41,7 +41,7 @@ const Footer = ({ disabled, setCurrent, form, textBtn,disabledContinue}) => {
     } finally {
       setLoading(false);
     }
-    navigate("/cvpage");
+    navigate(ROUTE_CONSTANTS.CVPAGE);
   };
 
   return (

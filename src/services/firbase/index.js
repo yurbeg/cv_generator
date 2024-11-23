@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCjguBxWtfqp0oytyrZP9yNh9L9NznfMmQ",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "cv-generator-952ab.firebaseapp.com",
   projectId: "cv-generator-952ab",
   storageBucket: "cv-generator-952ab.firebasestorage.app",
